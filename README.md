@@ -38,6 +38,12 @@ config({
 sh -ci "$(curl -fsSL https://storage.googleapis.com/flow-cli/install.sh)"
 ```
 
+Você saberá que a instalação foi bem-sucedida quando ver a mensagem:
+
+```
+Successfully installed the Flow CLI to /usr/local/bin.
+```
+
 2. Em terminais separados, execute:
 
 ```bash
