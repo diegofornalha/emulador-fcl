@@ -1,52 +1,115 @@
-# How to use the Flow Client Library (FCL) with SvelteKit
+# FCL SvelteKit Demo
 
-Everything you need to build a SvelteKit project with the Flow Client Library (FCL).
+Este é um projeto de demonstração que integra Flow Client Library (FCL) com SvelteKit.
 
-For a NextJS example, see my other repo: https://github.com/muttoni/fcl-nextjs-quickstart
+## Configuração Inicial
 
-## [Live demo](https://fcl-sveltekit.vercel.app/)
-
-[![image](https://user-images.githubusercontent.com/27052451/146340356-e34f3c47-43bc-4c11-926b-b82b99d561c6.png)](https://fcl-sveltekit.vercel.app/)
-
-## IMPORTANT
-
-This is using the latest version of SvelteKit. Make sure you are running **Node v16 or above**!
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+1. Clone o repositório e instale as dependências:
 
 ```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+yarn
 ```
 
-## Developing with Flow emulator
+2. Configure o ambiente:
 
-**Pre-Requisite**: To develop locally, make sure you have the Flow CLI installed: https://docs.onflow.org/flow-cli/install/
+Existem duas opções de configuração: testnet ou emulator local.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start the emulator, deploy the contracts, followed by the development server:
+### Opção 1: Usando Testnet (Recomendado para início)
+
+No arquivo `src/flow/config.js`, use a seguinte configuração:
+
+```javascript
+import { config } from "@onflow/fcl";
+
+config({
+  "app.detail.title": "FCL Svelte Demo",
+  "app.detail.icon": "https://placekitten.com/g/200/200",
+  "accessNode.api": "https://rest-testnet.onflow.org",
+  "discovery.wallet": "https://fcl-discovery.onflow.org/testnet/authn",
+  "flow.network": "testnet",
+});
+```
+
+### Opção 2: Usando Emulator Local
+
+1. Instale o Flow CLI:
 
 ```bash
-flow emulator # run emulator
-flow deploy # deploy smart contracts
-flow dev-wallet # run dev wallet
-
-npm run dev
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+sh -ci "$(curl -fsSL https://storage.googleapis.com/flow-cli/install.sh)"
 ```
 
-> NOTE: If you are switching between testnet and the emulator without changing tabs, FCL will keep you logged in with your testnet address (or vice-versa). Remember to logout inbetween environments to avoid runtime errors!
-
-## Building
-
-Before creating a production version of your app, install an [adapter](https://kit.svelte.dev/docs#adapters) for your target environment. Then:
+2. Em terminais separados, execute:
 
 ```bash
-npm run build
+# Terminal 1: Inicie o Flow Emulator
+flow emulator start
+
+# Terminal 2: Inicie o Flow Dev Wallet
+flow dev-wallet
 ```
 
-> You can preview the built app with `npm run preview`, regardless of whether you installed an adapter. This should _not_ be used to serve your app in production.
+3. No arquivo `src/flow/config.js`, use a configuração:
+
+```javascript
+import { config } from "@onflow/fcl";
+
+config({
+  "app.detail.title": "FCL Svelte Demo",
+  "app.detail.icon": "https://placekitten.com/g/200/200",
+  "accessNode.api": "http://localhost:8888",
+  "discovery.wallet": "http://localhost:8701/fcl/authn",
+  "flow.network": "emulator",
+});
+```
+
+## Executando o Projeto
+
+1. Inicie o servidor de desenvolvimento:
+
+```bash
+yarn dev
+```
+
+2. Acesse o projeto em `http://localhost:5173` (ou a porta indicada no terminal)
+
+## Estrutura do Projeto
+
+```
+├── src/
+│   ├── flow/
+│   │   ├── config.js     # Configuração FCL
+│   │   ├── actions.js    # Ações Flow
+│   │   └── stores.js     # Stores Svelte
+│   └── lib/
+│       └── Auth.svelte   # Componente de Autenticação
+├── cadence/
+│   ├── contracts/        # Contratos Flow
+│   ├── scripts/          # Scripts Flow
+│   └── transactions/     # Transações Flow
+└── flow.json            # Configuração Flow
+```
+
+## Dependências Principais
+
+- SvelteKit: Framework web
+- Flow Client Library (FCL): Interação com blockchain Flow
+- PicoCSS: Estilização
+- Vite: Build tool
+
+## Notas Importantes
+
+- Certifique-se de estar usando **Node.js v16 ou superior**
+- Ao alternar entre testnet e emulator, faça logout para evitar conflitos
+- Para desenvolvimento local, certifique-se de que o Flow CLI está instalado
+
+## Scripts Disponíveis
+
+```bash
+yarn dev      # Inicia servidor de desenvolvimento
+yarn build    # Cria build de produção
+yarn preview  # Visualiza build de produção
+```
+
+## Licença
+
+MIT
