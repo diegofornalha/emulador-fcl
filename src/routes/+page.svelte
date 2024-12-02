@@ -1,16 +1,27 @@
-
 <script>
-	import Auth from '$lib/Auth.svelte';
-  import Transaction from '$lib/Transaction.svelte';
-
+  import Auth from "$lib/Auth.svelte";
+  import NetworkSelector from "$lib/NetworkSelector.svelte";
+  import { networkStore } from "../flow/stores";
 </script>
 
-<svelte:head>
-	<title>Home</title>
-</svelte:head>
+<NetworkSelector />
+<Auth />
 
-<div class="mb-2">
-  <Transaction />
-</div>
+{#if $networkStore === "emulator"}
+  <div class="warning">
+    ⚠️ Para usar o emulador, certifique-se de executar:
+    <pre>
+      flow emulator start
+      flow dev-wallet
+    </pre>
+  </div>
+{/if}
 
-<Auth/>
+<style>
+  .warning {
+    background: #fff3cd;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+</style>

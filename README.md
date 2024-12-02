@@ -119,3 +119,27 @@ yarn preview  # Visualiza build de produção
 ## Licença
 
 MIT
+
+## Seleção de Rede
+
+O projeto suporta três ambientes diferentes:
+
+1. **Mainnet**: Rede principal do Flow
+2. **Testnet**: Rede de teste
+3. **Emulator**: Ambiente local para desenvolvimento
+
+Você pode alternar entre as redes usando o seletor na interface. Ao usar o emulator, certifique-se de:
+
+1. Iniciar o Flow Emulator:
+
+```bash
+flow emulator start
+```
+
+2. Iniciar o Flow Dev Wallet em outro terminal:
+
+```bash
+flow dev-wallet
+```
+
+> ⚠️ Ao trocar de rede, faça logout e login novamente para evitar conflitos.
